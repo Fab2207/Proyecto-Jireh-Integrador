@@ -3,24 +3,24 @@ package Models;
 public class Clientes {
 
     private int id;
-    private String nombre;
+    private String nombre_completo;
     private String direccion;
     private String celular;
     private String correo_electronico;
     private String crear_cliente;
-    private String actualizar_cliente_;
+    private String actualizar_cliente;
 
     public Clientes() {
     }
 
-    public Clientes(int id, String nombre, String direccion, String celular, String correo_electronico, String crear_cliente, String actualizar_cliente_) {
+    public Clientes(int id, String nombre_completo, String direccion, String celular, String correo_electronico, String crear_cliente, String actualizar_cliente) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombre_completo = nombre_completo;
         this.direccion = direccion;
         this.celular = celular;
         this.correo_electronico = correo_electronico;
         this.crear_cliente = crear_cliente;
-        this.actualizar_cliente_ = actualizar_cliente_;
+        this.actualizar_cliente = actualizar_cliente;
     }
 
     public int getId() {
@@ -31,12 +31,12 @@ public class Clientes {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombre_completo() {
+        return nombre_completo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre_completo(String nombre_completo) {
+        this.nombre_completo = nombre_completo;
     }
 
     public String getDireccion() {
@@ -71,12 +71,12 @@ public class Clientes {
         this.crear_cliente = crear_cliente;
     }
 
-    public String getActualizar_cliente_() {
-        return actualizar_cliente_;
+    public String getActualizar_cliente() {
+        return actualizar_cliente;
     }
 
-    public void setActualizar_cliente_(String actualizar_cliente_) {
-        this.actualizar_cliente_ = actualizar_cliente_;
+    public void setActualizar_cliente(String actualizar_cliente) {
+        this.actualizar_cliente = actualizar_cliente;
     }
 
 }

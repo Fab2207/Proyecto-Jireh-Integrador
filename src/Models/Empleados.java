@@ -3,30 +3,30 @@ package Models;
 public class Empleados {
 
     private int id;
-    private String nombre;
+    private String nombre_completo;
     private String usuario;
     private String direccion;
     private String celular;
     private String correo_electronico;
     private String contraseña;
     private String rol;
-    private String crear_usuario;
-    private String actualizar_usuario;
+    private String fecha_registro;
+    private String actualizar_informacion;
 
     public Empleados() {
     }
 
-    public Empleados(int id, String nombre, String usuario, String direccion, String celular, String correo_electronico, String contraseña, String rol, String crear_usuario, String actualizar_usuario) {
+    public Empleados(int id, String nombre_completo, String usuario, String direccion, String celular, String correo_electronico, String contraseña, String rol, String fecha_registro, String actualizar_informacion) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombre_completo = nombre_completo;
         this.usuario = usuario;
         this.direccion = direccion;
         this.celular = celular;
         this.correo_electronico = correo_electronico;
         this.contraseña = contraseña;
         this.rol = rol;
-        this.crear_usuario = crear_usuario;
-        this.actualizar_usuario = actualizar_usuario;
+        this.fecha_registro = fecha_registro;
+        this.actualizar_informacion = actualizar_informacion;
     }
 
     public int getId() {
@@ -37,12 +37,12 @@ public class Empleados {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombre_completo() {
+        return nombre_completo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre_completo(String nombre_completo) {
+        this.nombre_completo = nombre_completo;
     }
 
     public String getUsuario() {
@@ -93,21 +93,20 @@ public class Empleados {
         this.rol = rol;
     }
 
-    public String getCrear_usuario() {
-        return crear_usuario;
+    public String getFecha_registro() {
+        return fecha_registro;
     }
 
-    public void setCrear_usuario(String crear_usuario) {
-        this.crear_usuario = crear_usuario;
+    public void setFecha_registro(String fecha_registro) {
+        this.fecha_registro = fecha_registro;
     }
 
-    public String getActualizar_usuario() {
-        return actualizar_usuario;
+    public String getActualizar_informacion() {
+        return actualizar_informacion;
     }
 
-    public void setActualizar_usuario(String actualizar_usuario) {
-        this.actualizar_usuario = actualizar_usuario;
+    public void setActualizar_informacion(String actualizar_informacion) {
+        this.actualizar_informacion = actualizar_informacion;
     }
 
-    
 }

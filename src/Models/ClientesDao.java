@@ -20,7 +20,7 @@ public class ClientesDao {
 
     //Registrar Clientes
     public boolean registrarClienteQuery(Clientes cliente) {
-        String query = "INSERT INTO clientes(id, nombre, direccion, celular,"
+        String query = "INSERT INTO clientes(id, nombre_completo, direccion, celular,"
                 + "correo_electronico, crear_cliente, actualizar_cliente) "
                 + "VALUES(?,?,?,?,?,?,?)";
 
@@ -29,7 +29,7 @@ public class ClientesDao {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, cliente.getId());
-            pst.setString(2, cliente.getNombre());
+            pst.setString(2, cliente.getNombre_completo());
             pst.setString(3, cliente.getDireccion());
             pst.setString(4, cliente.getCelular());
             pst.setString(5, cliente.getCorreo_electronico());
@@ -63,7 +63,7 @@ public class ClientesDao {
             while (rs.next()) {
                 Clientes cliente = new Clientes();
                 cliente.setId(rs.getInt("id"));
-                cliente.setNombre(rs.getString("nombre"));
+                cliente.setNombre_completo(rs.getString("nombre_completo"));
                 cliente.setDireccion(rs.getString("direccion"));
                 cliente.setCelular(rs.getString("celular"));
                 cliente.setCorreo_electronico(rs.getString("correo_electronico"));
@@ -77,14 +77,14 @@ public class ClientesDao {
 
     //Modificar Clientes
     public boolean actualizarClientesQuery(Clientes cliente) {
-        String query = "UPDATE clientes SET nombre = ?, direccion = ?, celular = ?,"
+        String query = "UPDATE clientes SET nombre_completo = ?, direccion = ?, celular = ?,"
                 + "correo_electronico = ?, actualizar_cliente = ?";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
 
-            pst.setString(1, cliente.getNombre());
+            pst.setString(1, cliente.getNombre_completo());
             pst.setString(2, cliente.getDireccion());
             pst.setString(3, cliente.getCelular());
             pst.setString(4, cliente.getCorreo_electronico());

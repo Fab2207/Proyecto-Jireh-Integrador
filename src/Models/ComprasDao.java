@@ -106,7 +106,40 @@ public class ComprasDao {
         }
         return list_compras;
     }
-    
-    
+
+    //Listar Compras para imprimir Factura
+    public List listaComprasDetallesQuery(int id) {
+        List<Compras> list_compras = new ArrayList<>();
+        String query = "select co.crear_compra, comde.compras_precio, "
+                + "comde.compras_cantidad, comde.compras_subtotal, "
+                + "prov.nombre as proveedor_nombre, pro.nombre as producto_nombre, "
+                + "em.nombre_completo from compras co inner join compras_detalles "
+                + "comde on co.id = comde.compras_id inner join productos pro "
+                + "on comde.productos_id = pro.id inner join proveedores prov "
+                + "on co.proveedor_id = prov.id inner join empleados em on "
+                + "co.empleados_id = em.id where co.id = ?";
+        try {
+            conn = cn.getConnection();
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Compras compra = new Compras();
+                compra.setNombre_producto(rs.getString("producto_nombre"));
+                compra.setCompras_cantidad(rs.getInt("compras_cantidad"));
+                compra.setCompras_precio(rs.getDouble("compras_precio"));
+                compra.setCompras_subtotal(rs.getDouble("compras_subtotal"));
+                compra.setNombre_proveedor_producto(rs.getString("proveedor_nombre"));
+                compra.setCrear_compra(rs.getString("crear_compra"));
+                compra.setCompra(rs.getString("nombre_completo"));
+
+                list_compras.add(compra);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return list_compras;
+    }
 
 }

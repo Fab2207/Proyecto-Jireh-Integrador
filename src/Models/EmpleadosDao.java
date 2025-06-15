@@ -46,22 +46,22 @@ public class EmpleadosDao {
                 employee.setId(rs.getInt("id"));
                 id_user = employee.getId();
 
-                employee.setNombre(rs.getString("nombre"));
-                nombre_user = employee.getNombre();
+                employee.setNombre_completo(rs.getString("nombre_completo"));
+                nombre_user = employee.getNombre_completo();
 
                 employee.setUsuario(rs.getString("usuario"));
                 usuario_user = employee.getUsuario();
 
-                employee.setNombre(rs.getString("direccion"));
+                employee.setDireccion(rs.getString("direccion"));
                 direccion_user = employee.getDireccion();
 
-                employee.setNombre(rs.getString("celular"));
+                employee.setCelular(rs.getString("celular"));
                 celular_user = employee.getCelular();
 
-                employee.setNombre(rs.getString("correo"));
+                employee.setCorreo_electronico(rs.getString("correo_electronico"));
                 correo_user = employee.getCorreo_electronico();
 
-                employee.setNombre(rs.getString("rol"));
+                employee.setRol(rs.getString("rol"));
                 rol_user = employee.getRol();
             }
         } catch (SQLException e) {
@@ -72,9 +72,9 @@ public class EmpleadosDao {
 
     //Registrar empleado
     public boolean registrarEmpleadoQuery(Empleados employee) {
-        String query = "INSERT into empleados(id, nombre, usuario, direccion,"
-                + "celular, correo_electronico, contraseña, rol, crear_usuario,"
-                + "actualizar_usuario) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT into empleados(id, nombre_completo, usuario, "
+                + "direccion, celular, correo_electronico, contraseña, rol, "
+                + "fecha_registro, actualizar_informacion) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         Timestamp dateTime = new Timestamp(new Date().getTime());
 
@@ -83,7 +83,7 @@ public class EmpleadosDao {
             pst = conn.prepareStatement(query);
 
             pst.setInt(1, employee.getId());
-            pst.setString(2, employee.getNombre());
+            pst.setString(2, employee.getNombre_completo());
             pst.setString(3, employee.getUsuario());
             pst.setString(4, employee.getDireccion());
             pst.setString(5, employee.getCelular());
@@ -123,11 +123,11 @@ public class EmpleadosDao {
                 Empleados employee = new Empleados();
 
                 employee.setId(rs.getInt("id"));
-                employee.setNombre(rs.getString("nombre"));
+                employee.setNombre_completo(rs.getString("nombre_completo"));
                 employee.setUsuario(rs.getString("usuario"));
                 employee.setDireccion(rs.getString("direccion"));
                 employee.setCelular(rs.getString("celular"));
-                employee.setCorreo_electronico(rs.getString("email"));
+                employee.setCorreo_electronico(rs.getString("correo_electronico"));
 
                 list_employees.add(employee);
 
@@ -140,16 +140,16 @@ public class EmpleadosDao {
 
     //Modificar empleado
     public boolean modificarEmpleadoQuery(Empleados employee) {
-        String query = "UPDATE empleados SET nombre =?, usuario= ?,"
+        String query = "UPDATE empleados SET nombre_completo = ?, usuario= ?,"
                 + "direccion = ?, celular = ?, correo_electronico = ?"
-                + "rol = ?, actualizar_usuario = ?" + "WHERE id = ?";
+                + "rol = ?, actualizar_informacion = ?" + "WHERE id = ?";
 
         Timestamp dateTime = new Timestamp(new Date().getTime());
 
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
-            pst.setString(1, employee.getNombre());
+            pst.setString(1, employee.getNombre_completo());
             pst.setString(2, employee.getUsuario());
             pst.setString(3, employee.getDireccion());
             pst.setString(4, employee.getCelular());
