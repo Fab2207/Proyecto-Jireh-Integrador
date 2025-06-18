@@ -105,11 +105,10 @@ public class EmpleadosDao {
     }
 
     //Listar empleado
-    public List listaEmpeladosQuery(String value) {
+    public List listaEmpleadosQuery(String value) {
         List<Empleados> list_employees = new ArrayList();
         String query = "SELECT *FROM empleados ORDER BY rol ASC";
-        String query_buscar_empleado = "SELECT *FROM empleados WHERE"
-                + "id LIKE '%" + value + "%'";
+        String query_buscar_empleado = "SELECT *FROM empleados WHERE id LIKE ?";
         try {
             conn = cn.getConnection();
             if (value.equalsIgnoreCase("")) {
@@ -117,6 +116,7 @@ public class EmpleadosDao {
                 rs = pst.executeQuery();
             } else {
                 pst = conn.prepareStatement(query_buscar_empleado);
+                pst.setString(1, "%" + value + "%");
                 rs = pst.executeQuery();
             }
             while (rs.next()) {
@@ -128,6 +128,7 @@ public class EmpleadosDao {
                 employee.setDireccion(rs.getString("direccion"));
                 employee.setCelular(rs.getString("celular"));
                 employee.setCorreo_electronico(rs.getString("correo_electronico"));
+                employee.setRol(rs.getString("rol"));
 
                 list_employees.add(employee);
 
@@ -141,7 +142,7 @@ public class EmpleadosDao {
     //Modificar empleado
     public boolean modificarEmpleadoQuery(Empleados employee) {
         String query = "UPDATE empleados SET nombre_completo = ?, usuario= ?,"
-                + "direccion = ?, celular = ?, correo_electronico = ?"
+                + "direccion = ?, celular = ?, correo_electronico = ?,"
                 + "rol = ?, actualizar_informacion = ?" + "WHERE id = ?";
 
         Timestamp dateTime = new Timestamp(new Date().getTime());
@@ -167,17 +168,17 @@ public class EmpleadosDao {
         }
     }
 
-    //Eliminar Empleado
     public boolean eliminarEmpleadoQuery(int id) {
-        String query = "DELETE FROM empleados WHERE id =" + id;
+        String query = "DELETE FROM empleados WHERE id = ?";
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
+            pst.setInt(1, id);
             pst.execute();
             return true;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se puede eliminar un empleado"
-                    + "que tenga relacion con otra tabla" + e);
+            JOptionPane.showMessageDialog(null, "No se puede eliminar un empleado "
+                    + "que tenga relación con otra tabla." + e.getMessage());
             return false;
         }
     }

@@ -1,8 +1,16 @@
 package Vistas;
 
+import Controladores.EmpleadosController;
 import Controladores.SettingsControllers;
+import Models.Empleados;
+import Models.EmpleadosDao;
+import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
+
+    //Instancias Creadas
+    Empleados empleado = new Empleados();
+    EmpleadosDao empleado_dao = new EmpleadosDao();
 
     public Principal() {
         initComponents();
@@ -10,8 +18,13 @@ public class Principal extends javax.swing.JFrame {
         setResizable(false);
         setTitle("Panel de Administracion");
         setLocationRelativeTo(null);
-        SettingsControllers config = new SettingsControllers(this);
-        this.repaint();
+        
+        //Controlador de Setting
+        new SettingsControllers(this);
+        
+        //Controlador de Empleados
+        EmpleadosController cuenta_empleado = new EmpleadosController(empleado, empleado_dao, this);
+        cuenta_empleado.listaAllEmpleados();
     }
 
     @SuppressWarnings("unchecked")
@@ -478,6 +491,11 @@ public class Principal extends javax.swing.JFrame {
 
         btn_loginOut.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn_loginOut.setText("Salir");
+        btn_loginOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_loginOutActionPerformed(evt);
+            }
+        });
         Cabecera.add(btn_loginOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 35, -1, 30));
 
         getContentPane().add(Cabecera, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1010, 100));
@@ -1766,10 +1784,6 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_Registrar_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Registrar_ProductoActionPerformed
-
-        this.dispose();     }//GEN-LAST:event_btn_Registrar_ProductoActionPerformed
-
     private void txt_Producto_CodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_Producto_CodigoActionPerformed
         // TODO add your handling c:
     }//GEN-LAST:event_txt_Producto_CodigoActionPerformed
@@ -1805,6 +1819,20 @@ public class Principal extends javax.swing.JFrame {
     private void txt_Buscar_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_Buscar_ProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_Buscar_ProductoActionPerformed
+
+    private void btn_loginOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginOutActionPerformed
+        if (evt.getSource() == btn_loginOut) {
+            JOptionPane.showMessageDialog(this, "Has cerrado sesión correctamente.");
+            dispose();
+            Login login = new Login();
+            login.setVisible(true);
+        }
+
+    }//GEN-LAST:event_btn_loginOutActionPerformed
+
+    private void btn_Registrar_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Registrar_ProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_Registrar_ProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1875,7 +1903,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_eliminar_empleado;
     public javax.swing.JButton btn_eliminar_proveedor;
     public javax.swing.JButton btn_eliminar_venta;
-    private javax.swing.JButton btn_loginOut;
+    public javax.swing.JButton btn_loginOut;
     public javax.swing.JButton btn_modificar_perfil;
     public javax.swing.JButton btn_nueva_compra;
     public javax.swing.JButton btn_nueva_venta;

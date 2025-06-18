@@ -9,19 +9,56 @@ public class SettingsControllers implements MouseListener {
 
     private Principal view;
 
+    // Colores para hover y por defecto
+    private final Color HOVER_COLOR = new Color(152, 202, 63);
+    private final Color DEFAULT_COLOR = new Color(18, 45, 61);
+
     public SettingsControllers(Principal view) {
         this.view = view;
 
-        this.view.jLabel3.addMouseListener(this); //Productos
-        this.view.jLabel4.addMouseListener(this); //Compras
-        this.view.jLabel60.addMouseListener(this); //Ventas
-        this.view.jLabel5.addMouseListener(this); //Clientes
-        this.view.jLabel6.addMouseListener(this); //Empleados
-        this.view.jLabel7.addMouseListener(this); //Proveedores
-        this.view.jLabel8.addMouseListener(this); //Categorias
-        this.view.jLabel9.addMouseListener(this); //Reportes
-        this.view.jLabel10.addMouseListener(this); //Ajustes
-        
+        this.view.jLabel3.addMouseListener(this);  // Productos
+        this.view.jLabel4.addMouseListener(this);  // Compras
+        this.view.jLabel60.addMouseListener(this); // Ventas
+        this.view.jLabel5.addMouseListener(this);  // Clientes
+        this.view.jLabel6.addMouseListener(this);  // Empleados
+        this.view.jLabel7.addMouseListener(this);  // Proveedores
+        this.view.jLabel8.addMouseListener(this);  // Categorías
+        this.view.jLabel9.addMouseListener(this);  // Reportes
+        this.view.jLabel10.addMouseListener(this); // Ajustes
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        cambiarColor(e, HOVER_COLOR);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        cambiarColor(e, DEFAULT_COLOR);
+    }
+
+    private void cambiarColor(MouseEvent e, Color color) {
+        Object source = e.getSource();
+
+        if (source == view.jLabel3) {
+            view.jPanelProductos.setBackground(color);
+        } else if (source == view.jLabel4) {
+            view.jPanelCompras.setBackground(color);
+        } else if (source == view.jLabel60) {
+            view.jPanelVentas.setBackground(color);
+        } else if (source == view.jLabel5) {
+            view.jPanelClientes.setBackground(color);
+        } else if (source == view.jLabel6) {
+            view.jPanelEmpleados.setBackground(color);
+        } else if (source == view.jLabel7) {
+            view.jPanelProveedores.setBackground(color);
+        } else if (source == view.jLabel8) {
+            view.jPanelCategorias.setBackground(color);
+        } else if (source == view.jLabel9) {
+            view.jPanelReportes.setBackground(color);
+        } else if (source == view.jLabel10) {
+            view.jPanelAjustes.setBackground(color);
+        }
     }
 
     @Override
@@ -35,15 +72,4 @@ public class SettingsControllers implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-       
-    }
-
 }
