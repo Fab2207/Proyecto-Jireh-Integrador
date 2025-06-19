@@ -1,5 +1,11 @@
 package Controladores;
 
+import Models.EmpleadosDao;
+import static Models.EmpleadosDao.celular_user;
+import static Models.EmpleadosDao.correo_user;
+import static Models.EmpleadosDao.direccion_user;
+import static Models.EmpleadosDao.id_user;
+import static Models.EmpleadosDao.nombre_user;
 import Vistas.Principal;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -24,7 +30,9 @@ public class SettingsControllers implements MouseListener {
         this.view.jLabel7.addMouseListener(this);  // Proveedores
         this.view.jLabel8.addMouseListener(this);  // Categorías
         this.view.jLabel9.addMouseListener(this);  // Reportes
-        this.view.jLabel10.addMouseListener(this); // Ajustes
+        this.view.jLabel10.addMouseListener(this); // Perfil
+
+        Perfil();
     }
 
     @Override
@@ -72,4 +80,14 @@ public class SettingsControllers implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
     }
+
+    private void Perfil() {
+        this.view.txt_perfil_id.setText(""+id_user);
+        this.view.txt_perfil_name.setText(nombre_user);
+        this.view.txt_perfil_direccion.setText(direccion_user);
+        this.view.txt_perfil_celular.setText(celular_user);
+        this.view.txt_perfil_correo.setText(correo_user);
+        
+    }
+
 }

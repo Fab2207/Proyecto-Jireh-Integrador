@@ -4,6 +4,8 @@ import Controladores.EmpleadosController;
 import Controladores.SettingsControllers;
 import Models.Empleados;
 import Models.EmpleadosDao;
+import static Models.EmpleadosDao.nombre_user;
+import static Models.EmpleadosDao.rol_user;
 import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
@@ -16,15 +18,23 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         setSize(1208, 680);
         setResizable(false);
-        setTitle("Panel de Administracion");
+        titleInterface();
         setLocationRelativeTo(null);
-        
+
         //Controlador de Setting
         new SettingsControllers(this);
-        
+
         //Controlador de Empleados
         EmpleadosController cuenta_empleado = new EmpleadosController(empleado, empleado_dao, this);
         cuenta_empleado.listaAllEmpleados();
+
+    }
+
+    public String titleInterface() {
+        setTitle("Panel - " + rol_user);
+        label_nombre_empleado.setText(nombre_user);
+        label_nombre_rol.setText(rol_user);
+        return rol_user.trim();
     }
 
     @SuppressWarnings("unchecked")
@@ -57,6 +67,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btn_photo = new javax.swing.JButton();
         btn_loginOut = new javax.swing.JButton();
+        label_nombre_empleado = new javax.swing.JLabel();
+        label_nombre_rol = new javax.swing.JLabel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -497,6 +509,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         Cabecera.add(btn_loginOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 35, -1, 30));
+
+        label_nombre_empleado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        label_nombre_empleado.setForeground(new java.awt.Color(255, 255, 255));
+        Cabecera.add(label_nombre_empleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(714, 20, 160, 30));
+
+        label_nombre_rol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        label_nombre_rol.setForeground(new java.awt.Color(255, 255, 255));
+        Cabecera.add(label_nombre_rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(714, 60, 160, 30));
 
         getContentPane().add(Cabecera, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1010, 100));
 
@@ -1708,6 +1728,11 @@ public class Principal extends javax.swing.JFrame {
 
         btn_modificar_perfil.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_modificar_perfil.setText("Modificar");
+        btn_modificar_perfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificar_perfilActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -1833,6 +1858,10 @@ public class Principal extends javax.swing.JFrame {
     private void btn_Registrar_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Registrar_ProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_Registrar_ProductoActionPerformed
+
+    private void btn_modificar_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificar_perfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_modificar_perfilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2023,7 +2052,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
+    public javax.swing.JTabbedPane jTabbedPane2;
+    public javax.swing.JLabel label_nombre_empleado;
+    public javax.swing.JLabel label_nombre_rol;
     public javax.swing.JTextField txt_Buscar_Producto;
     public javax.swing.JTextField txt_Compras_Producto_Precio;
     public javax.swing.JTextField txt_Compras_Producto_Subtotal;

@@ -38,6 +38,10 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
         this.vista.btn_eliminar_empleado.addActionListener(this);
         //Boton cancelar 
         this.vista.btn_cancelar_empleado.addActionListener(this);
+        //Boton modificar contraseña
+        this.vista.btn_modificar_perfil.addActionListener(this);
+        //Vincular labels a las pestañas del sistema
+        this.vista.jLabel6.addMouseListener(this);
     }
 
     //Registrar Empleado controlador
@@ -103,7 +107,7 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
         } else if (e.getSource() == vista.btn_eliminar_empleado) {
             int row = vista.Tabla_Empleados.getSelectedRow();
             if (row == -1) {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar un empleado para eliminarl");
+                JOptionPane.showMessageDialog(null, "Debes seleccionar un empleado para eliminarlo");
             } else if (vista.Tabla_Empleados.getValueAt(row, 0).equals(id_user)) {
                 JOptionPane.showMessageDialog(null, "No puede eliminar al usuario autenticado");
             } else {
@@ -122,9 +126,28 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
             limpiarCampos();
             vista.btn_registrar_empleado.setEnabled(true);
             vista.txt_empleados_password.setEnabled(true);
+            vista.txt_empleados_password.setEditable(true);
             vista.txt_empleados_id.setEditable(true);
             vista.txt_empleados_id.setEnabled(true);
             vista.Tabla_Empleados.clearSelection();
+
+        } else if (e.getSource() == vista.btn_modificar_perfil) {
+            String password = String.valueOf(vista.txt_perfil_password_nueva.getPassword());
+            String password_confirmar = String.valueOf(vista.txt_perfil_password_confirmar.getPassword());
+            if (!password.equals("") && !password_confirmar.equals("")) {
+                if (password.equals(password_confirmar)) {
+                    empleado.setContraseña(String.valueOf(vista.txt_perfil_password_nueva.getPassword()));
+                    if (empleado_dao.modificarEmpleadoPassword(empleado) != false) {
+                        JOptionPane.showMessageDialog(null, "Se modifico correctamemte la contraseña");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ha ocurrido un error al modificar la contraseña");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+            }
         }
     }
 
@@ -182,6 +205,18 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
                 } catch (NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Algunos datos de la fila seleccionada están vacíos.");
                 }
+            }
+        }else if(e.getSource()==vista.jLabel6){
+            if(rol.equals("Administrador")){
+                vista.jTabbedPane2.setSelectedIndex(4);
+                limpiarTablaEmpleado();
+                limpiarCampos();
+                listaAllEmpleados();
+            }else {
+                vista.jTabbedPane2.setEnabledAt(4, false);
+                vista.jLabel6.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "El usuario "
+                        + "no tienes privilegios de Administrador");
             }
         }
     }

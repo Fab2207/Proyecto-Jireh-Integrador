@@ -184,9 +184,9 @@ public class EmpleadosDao {
     }
 
     //Cambiar Contraseña
-    public boolean eliminarEmpleadoPassword(Empleados employee) {
-        String query = "UPDATE empleados SET contraseña = ? WHERE usuario ="
-                + usuario_user + "";
+    public boolean modificarEmpleadoPassword(Empleados employee) {
+        String query = "UPDATE empleados SET contraseña = ? WHERE usuario ='"
+                + usuario_user + "'";
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);

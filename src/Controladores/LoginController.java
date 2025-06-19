@@ -24,14 +24,18 @@ public class LoginController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Obtener datos de la vista Login
+        // Obtener datos de la vista Login
         String user = login.txtUsername.getText().trim();
         String pass = String.valueOf(login.txtPassword.getPassword());
+
         if (e.getSource() == login.btnLogin) {
-            if (!user.equals("") || !pass.equals("")) {
+            if (!user.equals("") && !pass.equals("")) {
                 empleado = empleado_dao.loginQuery(user, pass);
-                JOptionPane.showMessageDialog(null, "Campos llenos, accediendo al sistema");
+
                 if (empleado.getUsuario() != null) {
+                    String nombre = empleado.getNombre_completo(); 
+                    JOptionPane.showMessageDialog(null, "¡Bienvenido, " + nombre + "!");
+
                     if (empleado.getRol().equals("Administrador")) {
                         Principal admin = new Principal();
                         admin.setVisible(true);
@@ -39,12 +43,13 @@ public class LoginController implements ActionListener {
                         Principal aux = new Principal();
                         aux.setVisible(true);
                     }
+
                     this.login.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecto");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Los campos o uno de los campos esta vacío");
+                JOptionPane.showMessageDialog(null, "Todos los campos deben estar llenos");
             }
         }
     }
