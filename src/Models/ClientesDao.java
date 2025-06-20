@@ -78,7 +78,7 @@ public class ClientesDao {
     //Modificar Clientes
     public boolean actualizarClientesQuery(Clientes cliente) {
         String query = "UPDATE clientes SET nombre_completo = ?, direccion = ?, celular = ?,"
-                + "correo_electronico = ?, actualizar_cliente = ?";
+                + "correo_electronico = ?, actualizar_cliente = ?" + "WHERE id = ?";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
             conn = cn.getConnection();
@@ -105,7 +105,7 @@ public class ClientesDao {
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
-            
+
             pst.execute();
             return true;
         } catch (SQLException e) {

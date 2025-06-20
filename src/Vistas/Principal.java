@@ -1,7 +1,10 @@
 package Vistas;
 
+import Controladores.ClientesController;
 import Controladores.EmpleadosController;
 import Controladores.SettingsControllers;
+import Models.Clientes;
+import Models.ClientesDao;
 import Models.Empleados;
 import Models.EmpleadosDao;
 import static Models.EmpleadosDao.nombre_user;
@@ -11,8 +14,13 @@ import javax.swing.JOptionPane;
 public class Principal extends javax.swing.JFrame {
 
     //Instancias Creadas
+    //Empleados
     Empleados empleado = new Empleados();
     EmpleadosDao empleado_dao = new EmpleadosDao();
+
+    //Clientes
+    Clientes cliente = new Clientes();
+    ClientesDao cliente_dao = new ClientesDao();
 
     public Principal() {
         initComponents();
@@ -27,6 +35,10 @@ public class Principal extends javax.swing.JFrame {
         //Controlador de Empleados
         EmpleadosController cuenta_empleado = new EmpleadosController(empleado, empleado_dao, this);
         cuenta_empleado.listaAllEmpleados();
+
+        //Controlador de Clientes
+        ClientesController cuenta_cliente = new ClientesController(cliente, cliente_dao, this);
+        cuenta_cliente.listAllClientes();
 
     }
 
@@ -1207,7 +1219,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         jLabel32.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel32.setText("Identificación:");
+        jLabel32.setText("Identificacion:");
 
         jLabel33.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel33.setText("Nombres:");
@@ -1516,7 +1528,7 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Nombre", "Decsripcion", "Direccion", "Celular", "Correo", "Distrito"
+                "Id", "Nombre", "Descripcion", "Direccion", "Celular", "Correo", "Distrito"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1848,11 +1860,8 @@ public class Principal extends javax.swing.JFrame {
     private void btn_loginOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginOutActionPerformed
         if (evt.getSource() == btn_loginOut) {
             JOptionPane.showMessageDialog(this, "Has cerrado sesión correctamente.");
-            dispose();
-            Login login = new Login();
-            login.setVisible(true);
+            System.exit(0); 
         }
-
     }//GEN-LAST:event_btn_loginOutActionPerformed
 
     private void btn_Registrar_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Registrar_ProductoActionPerformed
