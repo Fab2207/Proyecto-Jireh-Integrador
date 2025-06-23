@@ -138,7 +138,7 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
                 if (password.equals(password_confirmar)) {
                     empleado.setContraseña(String.valueOf(vista.txt_perfil_password_nueva.getPassword()));
                     if (empleado_dao.modificarEmpleadoPassword(empleado) != false) {
-                        JOptionPane.showMessageDialog(null, "Se modifico correctamemte la contraseña");
+                        JOptionPane.showMessageDialog(null, "Se modifico correctamente la contraseña");
                     } else {
                         JOptionPane.showMessageDialog(null, "Ha ocurrido un error al modificar la contraseña");
                     }

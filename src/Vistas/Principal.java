@@ -2,6 +2,7 @@ package Vistas;
 
 import Controladores.ClientesController;
 import Controladores.EmpleadosController;
+import Controladores.ProveedoresController;
 import Controladores.SettingsControllers;
 import Models.Clientes;
 import Models.ClientesDao;
@@ -9,6 +10,8 @@ import Models.Empleados;
 import Models.EmpleadosDao;
 import static Models.EmpleadosDao.nombre_user;
 import static Models.EmpleadosDao.rol_user;
+import Models.Proveedores;
+import Models.ProveedoresDao;
 import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
@@ -21,6 +24,10 @@ public class Principal extends javax.swing.JFrame {
     //Clientes
     Clientes cliente = new Clientes();
     ClientesDao cliente_dao = new ClientesDao();
+    
+    //Proveedores
+    Proveedores proveedor = new Proveedores();
+    ProveedoresDao proveedor_dao = new ProveedoresDao();
 
     public Principal() {
         initComponents();
@@ -39,7 +46,11 @@ public class Principal extends javax.swing.JFrame {
         //Controlador de Clientes
         ClientesController cuenta_cliente = new ClientesController(cliente, cliente_dao, this);
         cuenta_cliente.listAllClientes();
-
+        
+        //Controlador de Proveedores
+        ProveedoresController cuenta_proveedor = new ProveedoresController(proveedor, proveedor_dao, this);
+        cuenta_proveedor.listAllProveedores();
+        
     }
 
     public String titleInterface() {
