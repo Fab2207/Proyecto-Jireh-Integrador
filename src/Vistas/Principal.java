@@ -1,15 +1,21 @@
 package Vistas;
 
+import Controladores.CategoriasController;
 import Controladores.ClientesController;
 import Controladores.EmpleadosController;
+import Controladores.ProductosController;
 import Controladores.ProveedoresController;
 import Controladores.SettingsControllers;
+import Models.Categorias;
+import Models.CategoriasDao;
 import Models.Clientes;
 import Models.ClientesDao;
 import Models.Empleados;
 import Models.EmpleadosDao;
 import static Models.EmpleadosDao.nombre_user;
 import static Models.EmpleadosDao.rol_user;
+import Models.Productos;
+import Models.ProductosDao;
 import Models.Proveedores;
 import Models.ProveedoresDao;
 import javax.swing.JOptionPane;
@@ -24,10 +30,18 @@ public class Principal extends javax.swing.JFrame {
     //Clientes
     Clientes cliente = new Clientes();
     ClientesDao cliente_dao = new ClientesDao();
-    
+
     //Proveedores
     Proveedores proveedor = new Proveedores();
     ProveedoresDao proveedor_dao = new ProveedoresDao();
+
+    //Categorias
+    Categorias categoria = new Categorias();
+    CategoriasDao categoria_dao = new CategoriasDao();
+
+    //Productos
+    Productos producto = new Productos();
+    ProductosDao producto_dao = new ProductosDao();
 
     public Principal() {
         initComponents();
@@ -46,11 +60,18 @@ public class Principal extends javax.swing.JFrame {
         //Controlador de Clientes
         ClientesController cuenta_cliente = new ClientesController(cliente, cliente_dao, this);
         cuenta_cliente.listAllClientes();
-        
+
         //Controlador de Proveedores
         ProveedoresController cuenta_proveedor = new ProveedoresController(proveedor, proveedor_dao, this);
         cuenta_proveedor.listAllProveedores();
-        
+
+        //Controlador de Categorias
+        CategoriasController cuenta_categoria = new CategoriasController(categoria, categoria_dao, this);
+        cuenta_categoria.listAllCategorias();
+
+        //Controlador de Productos
+        ProductosController item_producto = new ProductosController(producto, producto_dao, this);
+
     }
 
     public String titleInterface() {
@@ -106,7 +127,7 @@ public class Principal extends javax.swing.JFrame {
         txt_Producto_Precio = new javax.swing.JTextField();
         txt_Producto_Descripcion = new javax.swing.JTextField();
         txt_Producto_ID = new javax.swing.JTextField();
-        cmd_Producto_Categoria = new javax.swing.JComboBox<>();
+        cmb_Producto_Categoria = new javax.swing.JComboBox<>();
         btn_Registrar_Producto = new javax.swing.JButton();
         btn_Actualizar_Producto = new javax.swing.JButton();
         btn_Eliminar_Producto = new javax.swing.JButton();
@@ -114,7 +135,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         txt_Buscar_Producto = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Productos_Tabla = new javax.swing.JTable();
+        Tabla_Productos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
@@ -246,6 +267,7 @@ public class Principal extends javax.swing.JFrame {
         btn_registrar_categoria = new javax.swing.JButton();
         btn_editar_categoria = new javax.swing.JButton();
         btn_eliminar_categoria = new javax.swing.JButton();
+        btn_cancelar_categoria = new javax.swing.JButton();
         jLabel51 = new javax.swing.JLabel();
         txt_buscar_categoria = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -583,7 +605,7 @@ public class Principal extends javax.swing.JFrame {
         txt_Producto_ID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txt_Producto_ID.setEnabled(false);
 
-        cmd_Producto_Categoria.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cmb_Producto_Categoria.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btn_Registrar_Producto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_Registrar_Producto.setText("Registrar");
@@ -644,7 +666,7 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(15, 15, 15)
                                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmd_Producto_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmb_Producto_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_Producto_Descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(59, 59, 59)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -668,7 +690,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(jLabel15)
                     .addComponent(txt_Producto_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmd_Producto_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmb_Producto_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Actualizar_Producto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -696,7 +718,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(txt_Buscar_Producto, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 160, 30));
 
-        Productos_Tabla.setModel(new javax.swing.table.DefaultTableModel(
+        Tabla_Productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -712,7 +734,7 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(Productos_Tabla);
+        jScrollPane1.setViewportView(Tabla_Productos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 930, 130));
 
@@ -1583,9 +1605,22 @@ public class Principal extends javax.swing.JFrame {
 
         btn_editar_categoria.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_editar_categoria.setText("Modificar");
+        btn_editar_categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editar_categoriaActionPerformed(evt);
+            }
+        });
 
         btn_eliminar_categoria.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_eliminar_categoria.setText("Eliminar");
+
+        btn_cancelar_categoria.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_cancelar_categoria.setText("Cancelar");
+        btn_cancelar_categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelar_categoriaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -1601,10 +1636,11 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(txt_categoria_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_categoria_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btn_eliminar_categoria, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                    .addComponent(btn_editar_categoria, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                    .addComponent(btn_registrar_categoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_cancelar_categoria, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                    .addComponent(btn_eliminar_categoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                    .addComponent(btn_editar_categoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                    .addComponent(btn_registrar_categoria, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
                 .addGap(40, 40, 40))
         );
         jPanel14Layout.setVerticalGroup(
@@ -1623,7 +1659,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btn_editar_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(btn_eliminar_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(btn_cancelar_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         jPanel6.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(35, 20, 520, 270));
@@ -1871,7 +1909,7 @@ public class Principal extends javax.swing.JFrame {
     private void btn_loginOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginOutActionPerformed
         if (evt.getSource() == btn_loginOut) {
             JOptionPane.showMessageDialog(this, "Has cerrado sesión correctamente.");
-            System.exit(0); 
+            System.exit(0);
         }
     }//GEN-LAST:event_btn_loginOutActionPerformed
 
@@ -1882,6 +1920,14 @@ public class Principal extends javax.swing.JFrame {
     private void btn_modificar_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificar_perfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_modificar_perfilActionPerformed
+
+    private void btn_editar_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_categoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_editar_categoriaActionPerformed
+
+    private void btn_cancelar_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelar_categoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_cancelar_categoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1922,11 +1968,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel Cabecera;
     private javax.swing.JPanel Logo;
     private javax.swing.JPanel Menu;
-    public javax.swing.JTable Productos_Tabla;
     public javax.swing.JTable Tabla_Categoria;
     public javax.swing.JTable Tabla_Clientes;
     public javax.swing.JTable Tabla_Compras;
     public javax.swing.JTable Tabla_Empleados;
+    public javax.swing.JTable Tabla_Productos;
     public javax.swing.JTable Tabla_Proveedor;
     public javax.swing.JTable Tabla_Reporte_Ventas;
     public javax.swing.JTable Tabla_Reportes_Compras;
@@ -1937,6 +1983,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_Registrar_Producto;
     public javax.swing.JButton btn_agregar_producto_compra;
     public javax.swing.JButton btn_agregar_venta_producto;
+    public javax.swing.JButton btn_cancelar_categoria;
     public javax.swing.JButton btn_cancelar_cliente;
     public javax.swing.JButton btn_cancelar_empleado;
     public javax.swing.JButton btn_cancelar_proveedor;
@@ -1961,10 +2008,10 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_registrar_cliente;
     public javax.swing.JButton btn_registrar_empleado;
     public javax.swing.JButton btn_registrar_proveedor;
+    public javax.swing.JComboBox<Object> cmb_Producto_Categoria;
     public javax.swing.JComboBox<String> cmb_compras_Proveedor;
     public javax.swing.JComboBox<String> cmb_distrito;
     public javax.swing.JComboBox<String> cmb_rol;
-    public javax.swing.JComboBox<Object> cmd_Producto_Categoria;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

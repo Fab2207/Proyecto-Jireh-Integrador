@@ -756,7 +756,7 @@
                                           </Group>
                                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="cmd_Producto_Categoria" min="-2" pref="165" max="-2" attributes="0"/>
+                                              <Component id="cmb_Producto_Categoria" min="-2" pref="165" max="-2" attributes="0"/>
                                               <Component id="txt_Producto_Descripcion" min="-2" pref="165" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -789,7 +789,7 @@
                               <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_Producto_Nombre" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="cmd_Producto_Categoria" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="cmb_Producto_Categoria" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="btn_Actualizar_Producto" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -911,7 +911,7 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="cmd_Producto_Categoria">
+                <Component class="javax.swing.JComboBox" name="cmb_Producto_Categoria">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="14" style="0"/>
@@ -1020,7 +1020,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="Productos_Tabla">
+                <Component class="javax.swing.JTable" name="Tabla_Productos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="0">
@@ -3202,8 +3202,9 @@
                               <Component id="txt_categoria_id" alignment="1" min="-2" pref="165" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="85" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="btn_eliminar_categoria" pref="105" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btn_cancelar_categoria" pref="105" max="32767" attributes="0"/>
+                              <Component id="btn_eliminar_categoria" alignment="1" pref="105" max="32767" attributes="0"/>
                               <Component id="btn_editar_categoria" alignment="1" pref="105" max="32767" attributes="0"/>
                               <Component id="btn_registrar_categoria" alignment="0" pref="105" max="32767" attributes="0"/>
                           </Group>
@@ -3230,7 +3231,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="btn_eliminar_categoria" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace pref="76" max="32767" attributes="0"/>
+                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                          <Component id="btn_cancelar_categoria" min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -3295,6 +3298,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Modificar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_editar_categoriaActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
@@ -3306,6 +3312,20 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Eliminar"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JButton" name="btn_cancelar_categoria">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Tahoma" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Cancelar"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cancelar_categoriaActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>

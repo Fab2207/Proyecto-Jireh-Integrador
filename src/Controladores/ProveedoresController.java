@@ -46,6 +46,7 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         // REGISTRAR PROVEEDOR
         if (e.getSource() == vista.btn_registrar_proveedor) {
             if (vista.txt_proveedor_name.getText().equals("")
@@ -65,15 +66,16 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
 
                 if (proveedor_dao.registrarProveedoresQuery(proveedor)) {
                     limpiarTablaProveedor();
-                    JOptionPane.showMessageDialog(null, "El proveedor fue registrado con éxito");
+                    JOptionPane.showMessageDialog(null, "Proveedor registrado con éxito");
                     limpiarCampos();
                     listAllProveedores();
                 } else {
                     JOptionPane.showMessageDialog(null, "Ha ocurrido un error al registrar el proveedor");
                 }
             }
-        } // EDITAR PROVEEDOR
-        else if (e.getSource() == vista.btn_editar_proveedor) {
+
+            // EDITAR PROVEEDOR
+        } else if (e.getSource() == vista.btn_editar_proveedor) {
             if (vista.txt_proveedor_id.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla para continuar");
             } else {
@@ -96,15 +98,16 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
                     if (proveedor_dao.actualizarProveedoresQuery(proveedor)) {
                         limpiarTablaProveedor();
                         listAllProveedores();
-                        JOptionPane.showMessageDialog(null, "Datos modificados de forma exitosa");
+                        JOptionPane.showMessageDialog(null, "Datos del proveedor modificados correctamente");
                         limpiarCampos();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Ha ocurrido un error al modificar el proveedor");
+                        JOptionPane.showMessageDialog(null, "Error al modificar los datos del proveedor");
                     }
                 }
             }
-        } // ELIMINAR PROVEEDOR
-        else if (e.getSource() == vista.btn_eliminar_proveedor) {
+
+            //  ELIMINAR PROVEEDOR 
+        } else if (e.getSource() == vista.btn_eliminar_proveedor) {
             int fila = vista.Tabla_Proveedor.getSelectedRow();
             if (fila == -1) {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar un proveedor para eliminarlo");
@@ -116,11 +119,12 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
                     limpiarCampos();
                     listAllProveedores();
                     vista.btn_registrar_proveedor.setEnabled(true);
-                    JOptionPane.showMessageDialog(null, "Proveedor eliminado exitosamente");
+                    JOptionPane.showMessageDialog(null, " Proveedor eliminado correctamente");
                 }
             }
-        } // CANCELAR PROVEEDOR
-        else if (e.getSource() == vista.btn_cancelar_proveedor) {
+
+            //  CANCELAR PROVEEDOR
+        } else if (e.getSource() == vista.btn_cancelar_proveedor) {
             limpiarCampos();
             vista.btn_registrar_proveedor.setEnabled(true);
             vista.txt_proveedor_id.setEditable(true);

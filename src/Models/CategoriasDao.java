@@ -18,7 +18,7 @@ public class CategoriasDao {
     PreparedStatement pst;
     ResultSet rs;
 
-    //Registrar Proveedor
+    //Registrar Categoria
     public boolean registrarCategoriaQuery(Categorias category) {
         String query = "INSERT INTO categorias(nombre, fecha_registro, "
                 + "actualizar_categoria) VALUES(?,?,?)";
@@ -41,7 +41,7 @@ public class CategoriasDao {
         }
     }
 
-    //Listar Proveedor
+    //Listar Categoria
     public List listarCategoriaQuery(String value) {
         List<Categorias> list_categorias = new ArrayList();
 
@@ -69,9 +69,9 @@ public class CategoriasDao {
         return list_categorias;
     }
 
-    //Modificar Proveedor
+    //Modificar Categoria
     public boolean actualizarCategoriaQuery(Categorias category) {
-        String query = "UPDATE proveedores SET nombre = ?, actualizar_categoria = ? "
+        String query = "UPDATE categorias SET nombre = ?, actualizar_categoria = ? "
                 + "WHERE id = ?";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
@@ -90,20 +90,44 @@ public class CategoriasDao {
         }
     }
 
-    //Eliminar Proveedor
+    //Eliminar Categoria
     public boolean eliminarCategoriaQuery(int id) {
         String query = "DELETE FROM categorias WHERE id =" + id;
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
+            pst.executeUpdate();
 
-            pst.execute();
+            reordenarIdsCategorias(); 
             return true;
+
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se puede eliminar la "
-                    + "categoria" + e);
+            JOptionPane.showMessageDialog(null, "No se puede eliminar la categoria: " + e);
             return false;
         }
     }
 
+    // Reordenar IDs después de una eliminación
+    public void reordenarIdsCategorias() {
+        String resetContador = "SET @count = 0";
+        String reordenar = "UPDATE categorias SET id = (@count := @count + 1)";
+        String reiniciarAI = "ALTER TABLE categorias AUTO_INCREMENT = 1";
+
+        try {
+            conn = cn.getConnection();
+
+            pst = conn.prepareStatement(resetContador);
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement(reordenar);
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement(reiniciarAI);
+            pst.executeUpdate();
+
+            conn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al reordenar IDs: " + e);
+        }
+    }
 }

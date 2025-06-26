@@ -109,17 +109,45 @@ public class ProveedoresDao {
 
     //Eliminar Proveedor
     public boolean eliminarProveedoresQuery(int id) {
-        String query = "DELETE FROM proveedores WHERE id =" + id;
+        String query = "DELETE FROM proveedores WHERE id = " + id;
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
+            pst.executeUpdate();
 
-            pst.execute();
+            // Reorganizar IDs después de la eliminación
+            reordenarIdsProveedores();
+
             return true;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se puede eliminar un proveedor"
-                    + "que tenga relacion con otra tabla" + e);
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el proveedor: " + e);
             return false;
+        }
+    }
+
+    public void reordenarIdsProveedores() {
+        String resetContador = "SET @count = 0";
+        String reordenar = "UPDATE proveedores SET id = (@count := @count + 1)";
+        String reiniciarAI = "ALTER TABLE proveedores AUTO_INCREMENT = 1";
+
+        try {
+            conn = cn.getConnection();
+
+            // Resetear contador de ID
+            pst = conn.prepareStatement(resetContador);
+            pst.executeUpdate();
+
+            // Reasignar IDs en orden
+            pst = conn.prepareStatement(reordenar);
+            pst.executeUpdate();
+
+            // Reiniciar AUTO_INCREMENT
+            pst = conn.prepareStatement(reiniciarAI);
+            pst.executeUpdate();
+
+            conn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al reordenar IDs de proveedores: " + e);
         }
     }
 }
