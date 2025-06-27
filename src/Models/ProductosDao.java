@@ -127,8 +127,8 @@ public class ProductosDao {
 
     //Buscar Productos
     public Productos buscarProductoQuery(int id) {
-        String query = "select pro.*, ca.nombre as nombre_categoria from productos"
-                + "pro inner join categorias ca on pro.categorias_id where pro.id=?";
+        String query = "SELECT pro.*, ca.nombre AS nombre_categoria FROM productos pro "
+                + "INNER JOIN categorias ca ON pro.categorias_id = ca.id WHERE pro.id=?";
         Productos product = new Productos();
 
         try {
@@ -195,7 +195,7 @@ public class ProductosDao {
 
     //Actualizar Stock
     public boolean actualizarStockQuery(int monto, int producto_id) {
-        String query = "udpate productos set cantidad_producto =? where id=?";
+        String query = "update productos set cantidad_producto =? where id=?";
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);

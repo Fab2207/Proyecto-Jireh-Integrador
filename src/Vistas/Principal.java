@@ -71,6 +71,7 @@ public class Principal extends javax.swing.JFrame {
 
         //Controlador de Productos
         ProductosController item_producto = new ProductosController(producto, producto_dao, this);
+        item_producto.listAllProductos();
 
     }
 
