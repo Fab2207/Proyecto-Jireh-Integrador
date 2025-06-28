@@ -206,15 +206,14 @@ public class EmpleadosController implements ActionListener, MouseListener, KeyLi
                     JOptionPane.showMessageDialog(null, "Algunos datos de la fila seleccionada están vacíos.");
                 }
             }
-        }else if(e.getSource()==vista.jLabel6){
-            if(rol.equals("Administrador")){
+        } else if (e.getSource() == vista.jLabel6) {
+            if (rol.equals("Administrador")) {
                 vista.jTabbedPane2.setSelectedIndex(4);
                 limpiarTablaEmpleado();
                 limpiarCampos();
                 listaAllEmpleados();
-            }else {
+            } else {
                 vista.jTabbedPane2.setEnabledAt(4, false);
-                vista.jLabel6.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "El usuario "
                         + "no tienes privilegios de Administrador");
             }

@@ -27,24 +27,20 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
         this.producto = producto;
         this.producto_dao = producto_dao;
         this.vista = vista;
-        //Boton Registrar Producto
+
         this.vista.btn_Registrar_Producto.addActionListener(this);
-        //Vincular la tabla
         this.vista.Tabla_Productos.addMouseListener(this);
-        //txt Buscar Producto 
         this.vista.txt_Buscar_Producto.addKeyListener(this);
-        //Boton modificar Producto
         this.vista.btn_Actualizar_Producto.addActionListener(this);
-        //Boton eliminar Producto
         this.vista.btn_Eliminar_Producto.addActionListener(this);
-        //Boton cancelar Producto
         this.vista.btn_Cancelar_Producto.addActionListener(this);
-        //Vincular labels a las pestañas del sistema
         this.vista.jLabel3.addMouseListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        // REGISTRAR PRODUCTO
         if (e.getSource() == vista.btn_Registrar_Producto) {
             if (vista.txt_Producto_Codigo.getText().equals("")
                     || vista.txt_Producto_Nombre.getText().equals("")
@@ -59,15 +55,18 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
                 producto.setPrecio_unitario(Double.parseDouble(vista.txt_Producto_Precio.getText().trim()));
                 ComboBoxDinamico categoria_id = (ComboBoxDinamico) vista.cmb_Producto_Categoria.getSelectedItem();
                 producto.setCategorias_id(categoria_id.getId());
+
                 if (producto_dao.registrarProductoQuery(producto)) {
                     limpiarTabla();
                     limpiarCampos();
                     listAllProductos();
-                    JOptionPane.showMessageDialog(null, "Producto registardo con éxito");
+                    JOptionPane.showMessageDialog(null, "Producto registrado con éxito");
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al registrar producto");
                 }
             }
+
+            // MODIFICAR PRODUCTO
         } else if (e.getSource() == vista.btn_Actualizar_Producto) {
             if (vista.txt_Producto_Codigo.getText().equals("")
                     || vista.txt_Producto_Nombre.getText().equals("")
@@ -77,33 +76,62 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
             } else {
                 producto.setCodigo(Integer.parseInt(vista.txt_Producto_Codigo.getText()));
-                producto.setNombre(vista.txt_Producto_Codigo.getText().trim());
-                producto.setNombre(vista.txt_Producto_Codigo.getText().trim());
+                producto.setNombre(vista.txt_Producto_Nombre.getText().trim());
                 producto.setDescripcion(vista.txt_Producto_Descripcion.getText().trim());
                 producto.setPrecio_unitario(Double.parseDouble(vista.txt_Producto_Precio.getText()));
                 ComboBoxDinamico categoria_id = (ComboBoxDinamico) vista.cmb_Producto_Categoria.getSelectedItem();
                 producto.setCategorias_id(categoria_id.getId());
                 producto.setId(Integer.parseInt(vista.txt_Producto_ID.getText()));
+
                 if (producto_dao.actualizarProductoQuery(producto)) {
                     limpiarTabla();
                     limpiarCampos();
                     listAllProductos();
+                    vista.btn_Registrar_Producto.setEnabled(true);
                     JOptionPane.showMessageDialog(null, "Producto modificado con éxito");
                 } else {
                     JOptionPane.showMessageDialog(null, "Ha ocurrido un error al modificar el producto");
                 }
             }
+
+            // ELIMINAR PRODUCTO
         } else if (e.getSource() == vista.btn_Eliminar_Producto) {
             int row = vista.Tabla_Productos.getSelectedRow();
             if (row == -1) {
-                JOptionPane.showMessageDialog(null, "Debes seleccionar un producto para poder eliminar");
+                JOptionPane.showMessageDialog(null, "Debes seleccionar un producto para poder eliminarlo");
+            } else {
+                int id = Integer.parseInt(vista.Tabla_Productos.getValueAt(row, 0).toString());
+                int question = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer eliminar este producto?");
+                if (question == 0) {
+                    boolean eliminado = producto_dao.eliminarProductoQuery(id);
+                    if (eliminado) {
+                        limpiarCampos();
+                        limpiarTabla();
+                        listAllProductos();
+                        vista.btn_Eliminar_Producto.setEnabled(true);
+                        vista.btn_Registrar_Producto.setEnabled(true);
+                        JOptionPane.showMessageDialog(null, "Producto eliminado y IDs reorganizados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo eliminar el producto. Puede estar relacionado con otra entidad.");
+                    }
+                }
             }
+
+            // CANCELAR PRODUCTO
+        } else if (e.getSource() == vista.btn_Cancelar_Producto) {
+            limpiarCampos();
+            vista.btn_Cancelar_Producto.setEnabled(true);
+            vista.btn_Registrar_Producto.setEnabled(true);
         }
     }
 
     public void listAllProductos() {
         if (rol.equals("Administrador") || rol.equals("Auxiliar")) {
             List<Productos> list = producto_dao.listarProductoQuery(vista.txt_Buscar_Producto.getText());
+
+            //Ordenar por ID ascendente
+            list.sort((p1, p2) -> Integer.compare(p1.getId(), p2.getId()));
+
             model = (DefaultTableModel) vista.Tabla_Productos.getModel();
             Object row[] = new Object[7];
             for (int i = 0; i < list.size(); i++) {
@@ -117,6 +145,8 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
                 model.addRow(row);
             }
             vista.Tabla_Productos.setModel(model);
+
+            // Restringir controles para rol Auxiliar
             if (rol.equals("Auxiliar")) {
                 vista.btn_Registrar_Producto.setEnabled(false);
                 vista.btn_Actualizar_Producto.setEnabled(false);
@@ -143,6 +173,11 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
             vista.txt_Producto_Precio.setText("" + producto.getPrecio_unitario());
             vista.cmb_Producto_Categoria.setSelectedItem(new ComboBoxDinamico(producto.getCategorias_id(), producto.getNombre_categoria()));
             vista.btn_Registrar_Producto.setEnabled(false);
+        } else if (e.getSource() == vista.jLabel3) {
+            vista.jTabbedPane2.setSelectedIndex(0);
+            limpiarCampos();
+            limpiarTabla();
+            listAllProductos();
         }
     }
 
@@ -179,9 +214,9 @@ public class ProductosController implements ActionListener, MouseListener, KeyLi
     }
 
     public void limpiarTabla() {
-        for (int i = 0; i < model.getRowCount(); i++) {
-            model.removeRow(i);
-            i = i - 1;
+        model = (DefaultTableModel) vista.Tabla_Productos.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
         }
     }
 

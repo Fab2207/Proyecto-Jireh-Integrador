@@ -192,7 +192,6 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
                 listAllProveedores();
             } else {
                 vista.jTabbedPane2.setEnabledAt(5, false);
-                vista.jLabel7.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "El usuario no tiene privilegios de Administrador");
             }
         }

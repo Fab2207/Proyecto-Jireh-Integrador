@@ -6,10 +6,12 @@ import static Models.EmpleadosDao.correo_user;
 import static Models.EmpleadosDao.direccion_user;
 import static Models.EmpleadosDao.id_user;
 import static Models.EmpleadosDao.nombre_user;
+import static Models.EmpleadosDao.rol_user;
 import Vistas.Principal;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JOptionPane;
 
 public class SettingsControllers implements MouseListener {
 
@@ -30,7 +32,7 @@ public class SettingsControllers implements MouseListener {
         this.view.jLabel7.addMouseListener(this);  // Proveedores
         this.view.jLabel8.addMouseListener(this);  // Categorías
         this.view.jLabel9.addMouseListener(this);  // Reportes
-        this.view.jLabel10.addMouseListener(this); // Perfil
+        this.view.jLabel10.addMouseListener(this); // Configuración
 
         Perfil();
     }
@@ -71,6 +73,15 @@ public class SettingsControllers implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Object source = e.getSource();
+
+        if (source == view.jLabel10) { 
+            if (rol_user.equalsIgnoreCase("Administrador")) {
+                view.jTabbedPane2.setSelectedIndex(8);
+            } else {
+                JOptionPane.showMessageDialog(view, "No tienes privilegios de administrador para acceder a la configuración.");
+            }
+        }
     }
 
     @Override
@@ -82,12 +93,11 @@ public class SettingsControllers implements MouseListener {
     }
 
     private void Perfil() {
-        this.view.txt_perfil_id.setText(""+id_user);
+        this.view.txt_perfil_id.setText("" + id_user);
         this.view.txt_perfil_name.setText(nombre_user);
         this.view.txt_perfil_direccion.setText(direccion_user);
         this.view.txt_perfil_celular.setText(celular_user);
         this.view.txt_perfil_correo.setText(correo_user);
-        
     }
 
 }

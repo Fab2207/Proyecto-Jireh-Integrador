@@ -16,7 +16,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 
 public class CategoriasController implements ActionListener, MouseListener, KeyListener {
 
@@ -30,30 +29,29 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
         this.categoria = categoria;
         this.categoria_dao = categoria_dao;
         this.vista = vista;
-        //Boton Registrar categoria
+
+        // Enlazar botones con acciones
         this.vista.btn_registrar_categoria.addActionListener(this);
-        //Vincular la tabla
-        this.vista.Tabla_Categoria.addMouseListener(this);
-        //txt Buscar tabla categoria
-        this.vista.txt_buscar_categoria.addKeyListener(this);
-        //Boton modificar categoria
         this.vista.btn_editar_categoria.addActionListener(this);
-        //Boton eliminar categoria
         this.vista.btn_eliminar_categoria.addActionListener(this);
-        //Boton cancelar categoria
         this.vista.btn_cancelar_categoria.addActionListener(this);
-        //Vincular labels a las pestañas del sistema
+
+        // Enlazar eventos visuales
+        this.vista.Tabla_Categoria.addMouseListener(this);
         this.vista.jLabel8.addMouseListener(this);
-        //Vincular metodo 
-        getCategoriasNombre();
-        //Uso de la libreria para vincular las categorias en Productos
+        this.vista.txt_buscar_categoria.addKeyListener(this);
+
+        // Decorar ComboBox con autocompletado
         AutoCompleteDecorator.decorate(vista.cmb_Producto_Categoria);
+
+        // Cargar opciones en ComboBox desde BD
+        getCategoriasNombre();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        // Registrar Categoria
+        // REGISTRAR CATEGORÍA
         if (e.getSource() == vista.btn_registrar_categoria) {
             if (vista.txt_categoria_name.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "El campo de nombre es obligatorio");
@@ -63,19 +61,18 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
                     limpiarTabla();
                     limpiarCampos();
                     listAllCategorias();
-                    JOptionPane.showMessageDialog(null, "Categoria registrada correctamente");
+                    JOptionPane.showMessageDialog(null, "Categoría registrada correctamente");
                 } else {
                     JOptionPane.showMessageDialog(null, "Ha ocurrido un error al registrar la categoría");
                 }
             }
 
-            // Modificar Categoria
+            // MODIFICAR CATEGORÍA
         } else if (e.getSource() == vista.btn_editar_categoria) {
             if (vista.txt_categoria_id.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Selecciona una fila para continuar");
             } else {
-                if (vista.txt_categoria_id.getText().equals("")
-                        || vista.txt_categoria_name.getText().equals("")) {
+                if (vista.txt_categoria_name.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
                 } else {
                     categoria.setId(Integer.parseInt(vista.txt_categoria_id.getText()));
@@ -90,24 +87,29 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
                 }
             }
 
-            //  Eliminar Categoria
+            // ELIMINAR CATEGORÍA
         } else if (e.getSource() == vista.btn_eliminar_categoria) {
             int row = vista.Tabla_Categoria.getSelectedRow();
             if (row == -1) {
-                JOptionPane.showMessageDialog(null, "Seleccione la categoria a eliminar");
+                JOptionPane.showMessageDialog(null, "Seleccione la categoría a eliminar");
             } else {
                 int id = Integer.parseInt(vista.Tabla_Categoria.getValueAt(row, 0).toString());
-                int question = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer eliminar esta categoria?");
-                if (question == 0 && categoria_dao.eliminarCategoriaQuery(id)) {
-                    limpiarCampos();
-                    limpiarTabla();
-                    listAllCategorias();
-                    vista.btn_eliminar_categoria.setEnabled(true);
-                    JOptionPane.showMessageDialog(null, "Categoría eliminada correctamente");
+                int question = JOptionPane.showConfirmDialog(null, "¿Está seguro de querer eliminar esta categoría?");
+                if (question == 0) {
+                    boolean eliminada = categoria_dao.eliminarCategoriaQuery(id);
+                    if (eliminada) {
+                        limpiarCampos();
+                        limpiarTabla();
+                        listAllCategorias();
+                        vista.btn_eliminar_categoria.setEnabled(true);
+                        JOptionPane.showMessageDialog(null, "Categoría eliminada correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, " No se pudo eliminar la categoría. Puede que tenga productos asociados.");
+                    }
                 }
             }
 
-            // Cancelar Categoria
+            // CANCELAR
         } else if (e.getSource() == vista.btn_cancelar_categoria) {
             limpiarCampos();
             vista.btn_cancelar_categoria.setEnabled(true);
@@ -129,7 +131,6 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
                 listAllCategorias();
             } else {
                 vista.jTabbedPane2.setEnabledAt(6, false);
-                vista.jLabel8.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "No tienes privilegios de administrador");
             }
         }
@@ -168,9 +169,9 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
     }
 
     public void limpiarTabla() {
-        for (int i = 0; i < model.getRowCount(); i++) {
-            model.removeRow(i);
-            i = i - 1;
+        model = (DefaultTableModel) vista.Tabla_Categoria.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
         }
     }
 
@@ -179,9 +180,9 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
             List<Categorias> list_categoria = categoria_dao.listarCategoriaQuery(vista.txt_buscar_categoria.getText());
             model = (DefaultTableModel) vista.Tabla_Categoria.getModel();
             Object[] row = new Object[2];
-            for (int i = 0; i < list_categoria.size(); i++) {
-                row[0] = list_categoria.get(i).getId();
-                row[1] = list_categoria.get(i).getNombre();
+            for (Categorias cat : list_categoria) {
+                row[0] = cat.getId();
+                row[1] = cat.getNombre();
                 model.addRow(row);
             }
             vista.Tabla_Categoria.setModel(model);
@@ -194,10 +195,9 @@ public class CategoriasController implements ActionListener, MouseListener, KeyL
         vista.btn_registrar_categoria.setEnabled(true);
     }
 
-    // Mostrar Categorías 
     public void getCategoriasNombre() {
         vista.cmb_Producto_Categoria.removeAllItems();
-        List<Categorias> list = categoria_dao.listarCategoriaQuery(vista.txt_buscar_categoria.getText());
+        List<Categorias> list = categoria_dao.listarCategoriaQuery("");
         for (Categorias cat : list) {
             vista.cmb_Producto_Categoria.addItem(new ComboBoxDinamico(cat.getId(), cat.getNombre()));
         }

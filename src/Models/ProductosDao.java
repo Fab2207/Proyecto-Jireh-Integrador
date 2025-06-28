@@ -12,13 +12,13 @@ import javax.swing.JOptionPane;
 
 public class ProductosDao {
 
-    //Instancia Conexion
+    // Instancia conexión
     ConeccionMySQL cn = new ConeccionMySQL();
     Connection conn;
     PreparedStatement pst;
     ResultSet rs;
 
-    //Registrar Productos
+    // Registrar producto
     public boolean registrarProductoQuery(Productos product) {
         String query = "INSERT INTO productos(codigo, nombre, descripcion, "
                 + "precio_unitario, crear_producto, actualizar_producto, categorias_id) "
@@ -41,29 +41,25 @@ public class ProductosDao {
             return true;
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al registrar el producto" + e);
+            JOptionPane.showMessageDialog(null, "Error al registrar el producto: " + e);
             return false;
         }
     }
 
-    //Listar Productos
+    // Listar productos
     public List listarProductoQuery(String value) {
         List<Productos> list_productos = new ArrayList();
-        String query = "select pro.*, ca.nombre AS nombre_categoria FROM "
-                + "productos pro, categorias ca WHERE pro.categorias_id = ca.id;";
-        String query_buscar_producto = "select pro.*, ca.nombre AS nombre_categoria "
-                + "FROM productos pro inner join categorias ca on "
-                + "pro.categorias_id = ca.id; WHERE pro.nombre like '%" + value + '%';
+        String query = "SELECT pro.*, ca.nombre AS nombre_categoria FROM productos pro "
+                + "INNER JOIN categorias ca ON pro.categorias_id = ca.id";
+        String query_buscar_producto = "SELECT pro.*, ca.nombre AS nombre_categoria "
+                + "FROM productos pro INNER JOIN categorias ca ON pro.categorias_id = ca.id "
+                + "WHERE pro.nombre LIKE '%" + value + "%'";
 
         try {
             conn = cn.getConnection();
-            if (value.equalsIgnoreCase("")) {
-                pst = conn.prepareStatement(query);
-                rs = pst.executeQuery();
-            } else {
-                pst = conn.prepareStatement(query_buscar_producto);
-                rs = pst.executeQuery();
-            }
+            pst = conn.prepareStatement(value.equalsIgnoreCase("") ? query : query_buscar_producto);
+            rs = pst.executeQuery();
+
             while (rs.next()) {
                 Productos product = new Productos();
                 product.setId(rs.getInt("id"));
@@ -76,16 +72,15 @@ public class ProductosDao {
                 list_productos.add(product);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            JOptionPane.showMessageDialog(null, "Error al listar productos: " + e);
         }
         return list_productos;
     }
 
-    //Modificar Productos
+    // Actualizar producto
     public boolean actualizarProductoQuery(Productos product) {
-        String query = "UPDATE productos SET codigo=?, nombre=?, descripcion=?,"
-                + "precio_unitario=?, actualizar_producto=?, categorias_id=? "
-                + "WHERE id=?";
+        String query = "UPDATE productos SET codigo=?, nombre=?, descripcion=?, "
+                + "precio_unitario=?, actualizar_producto=?, categorias_id=? WHERE id=?";
 
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
@@ -103,29 +98,49 @@ public class ProductosDao {
             pst.execute();
             return true;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al modificar el producto:"
-                    + e);
+            JOptionPane.showMessageDialog(null, "Error al modificar el producto: " + e);
             return false;
         }
     }
 
-    //Eliminar Productos
+    // Eliminar producto con reordenamiento de IDs
     public boolean eliminarProductoQuery(int id) {
-        String query = "DELETE FROM productos WHERE id =" + id;
+        String query = "DELETE FROM productos WHERE id = " + id;
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
+            pst.executeUpdate();
 
-            pst.execute();
+            reordenarIdsProductos(); // ← reorganiza los IDs tras eliminar
             return true;
+
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se puede eliminar el "
-                    + "producto si tiene relacion con otra tabla" + e);
+            JOptionPane.showMessageDialog(null, "No se puede eliminar el producto: " + e);
             return false;
         }
     }
 
-    //Buscar Productos
+    // Reordenar los IDs visuales de productos
+    public void reordenarIdsProductos() {
+        try {
+            conn = cn.getConnection();
+
+            pst = conn.prepareStatement("SET @count = 0");
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement("UPDATE productos SET id = (@count := @count + 1)");
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement("ALTER TABLE productos AUTO_INCREMENT = 1");
+            pst.executeUpdate();
+
+            conn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al reordenar IDs de productos: " + e);
+        }
+    }
+
+    // Buscar producto por ID
     public Productos buscarProductoQuery(int id) {
         String query = "SELECT pro.*, ca.nombre AS nombre_categoria FROM productos pro "
                 + "INNER JOIN categorias ca ON pro.categorias_id = ca.id WHERE pro.id=?";
@@ -134,9 +149,9 @@ public class ProductosDao {
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
-
             pst.setInt(1, id);
             rs = pst.executeQuery();
+
             if (rs.next()) {
                 product.setId(rs.getInt("id"));
                 product.setCodigo(rs.getInt("codigo"));
@@ -147,55 +162,56 @@ public class ProductosDao {
                 product.setNombre_categoria(rs.getString("nombre_categoria"));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al buscar producto: " + e);
         }
         return product;
     }
 
-    //Buscar Productos por codigo
+    // Buscar producto por código
     public Productos buscarCodigo(int codigo) {
-        String query = "select pro.id, pro.nombre from productos pro where "
-                + "pro.codigo = ?";
+        String query = "SELECT pro.id, pro.nombre FROM productos pro WHERE pro.codigo = ?";
         Productos product = new Productos();
+
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
-
             pst.setInt(1, codigo);
             rs = pst.executeQuery();
+
             if (rs.next()) {
                 product.setId(rs.getInt("id"));
                 product.setCodigo(rs.getInt("codigo"));
                 product.setNombre(rs.getString("nombre"));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al buscar por código: " + e);
         }
         return product;
     }
 
-    //Verificar la cantidad de productos
+    // Verificar cantidad disponible de un producto
     public Productos buscarId(int id) {
-        String query = "SELECT pro.cantidad_producto from productos pro where "
-                + "pro.id=?";
+        String query = "SELECT cantidad_producto FROM productos WHERE id=?";
         Productos product = new Productos();
+
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
+
             if (rs.next()) {
                 product.setCantidad_producto(rs.getInt("cantidad_producto"));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al verificar cantidad: " + e);
         }
         return product;
     }
 
-    //Actualizar Stock
+    // Actualizar stock del producto
     public boolean actualizarStockQuery(int monto, int producto_id) {
-        String query = "update productos set cantidad_producto =? where id=?";
+        String query = "UPDATE productos SET cantidad_producto = ? WHERE id = ?";
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
@@ -204,7 +220,7 @@ public class ProductosDao {
             pst.execute();
             return true;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al actualizar stock: " + e);
             return false;
         }
     }
