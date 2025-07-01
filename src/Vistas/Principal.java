@@ -2,6 +2,7 @@ package Vistas;
 
 import Controladores.CategoriasController;
 import Controladores.ClientesController;
+import Controladores.ComprasController;
 import Controladores.EmpleadosController;
 import Controladores.ProductosController;
 import Controladores.ProveedoresController;
@@ -10,6 +11,8 @@ import Models.Categorias;
 import Models.CategoriasDao;
 import Models.Clientes;
 import Models.ClientesDao;
+import Models.Compras;
+import Models.ComprasDao;
 import Models.Empleados;
 import Models.EmpleadosDao;
 import static Models.EmpleadosDao.nombre_user;
@@ -43,6 +46,10 @@ public class Principal extends javax.swing.JFrame {
     Productos producto = new Productos();
     ProductosDao producto_dao = new ProductosDao();
 
+    //Compras
+    Compras compra = new Compras();
+    ComprasDao compra_dao = new ComprasDao();
+
     public Principal() {
         initComponents();
         setSize(1208, 680);
@@ -73,6 +80,8 @@ public class Principal extends javax.swing.JFrame {
         ProductosController item_producto = new ProductosController(producto, producto_dao, this);
         item_producto.listAllProductos();
 
+        //Controlador de Compras
+        ComprasController datos_compra = new ComprasController(compra, compra_dao, this);
     }
 
     public String titleInterface() {
@@ -777,11 +786,16 @@ public class Principal extends javax.swing.JFrame {
         jLabel25.setText("Total a Pagar:");
 
         txt_Compras_Producto_Subtotal.setEditable(false);
+        txt_Compras_Producto_Subtotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         txt_Compras_Producto_id.setEditable(false);
+        txt_Compras_Producto_id.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txt_Compras_Producto_id.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txt_Compras_Producto_id.setEnabled(false);
+        txt_Compras_Producto_id.setSelectionColor(new java.awt.Color(51, 51, 51));
 
         txt_Compras_Producto_Total.setEditable(false);
+        txt_Compras_Producto_Total.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         btn_agregar_producto_compra.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_agregar_producto_compra.setText("Agregar");
@@ -1714,7 +1728,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jScrollPane7.setViewportView(Tabla_Reportes_Compras);
 
-        jPanel7.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 930, 220));
+        jPanel7.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 930, 200));
 
         jLabel72.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel72.setForeground(new java.awt.Color(255, 255, 255));
@@ -2010,7 +2024,7 @@ public class Principal extends javax.swing.JFrame {
     public javax.swing.JButton btn_registrar_empleado;
     public javax.swing.JButton btn_registrar_proveedor;
     public javax.swing.JComboBox<Object> cmb_Producto_Categoria;
-    public javax.swing.JComboBox<String> cmb_compras_Proveedor;
+    public javax.swing.JComboBox<Object> cmb_compras_Proveedor;
     public javax.swing.JComboBox<String> cmb_distrito;
     public javax.swing.JComboBox<String> cmb_rol;
     private javax.swing.JLabel jLabel1;

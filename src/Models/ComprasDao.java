@@ -42,8 +42,8 @@ public class ComprasDao {
     public boolean registrarCompraDetallesQuery(int compras_id, double compras_precio,
             int compras_cantidad, double compras_subtotal, int productos_id) {
         String query = "INSERT INTO compras_detalles (compras_id, compras_precio, "
-                + "compras_cantidad, compras_subtotal, crear_compra, compras_id) "
-                + "VALUES (?,?,?,?,?,?) ";
+                + "compras_cantidad, compras_subtotal, productos_id) "
+                + "VALUES (?,?,?,?,?)";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
             conn = cn.getConnection();
@@ -52,8 +52,7 @@ public class ComprasDao {
             pst.setDouble(2, compras_precio);
             pst.setInt(3, compras_cantidad);
             pst.setDouble(4, compras_subtotal);
-            pst.setTimestamp(5, dateTime);
-            pst.setInt(6, productos_id);
+            pst.setInt(5, productos_id);
 
             pst.execute();
             return true;

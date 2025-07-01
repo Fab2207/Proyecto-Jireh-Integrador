@@ -1,5 +1,6 @@
 package Controladores;
 
+import Models.ComboBoxDinamico;
 import static Models.EmpleadosDao.rol_user;
 import Models.Proveedores;
 import Models.ProveedoresDao;
@@ -42,6 +43,8 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
         this.vista.btn_cancelar_proveedor.addActionListener(this);
         //Vincular labels a las pestañas del sistema
         this.vista.jLabel7.addMouseListener(this);
+        //Metodo Proveedores Nombre
+        getProveedoresNombre();
     }
 
     @Override
@@ -233,6 +236,14 @@ public class ProveedoresController implements ActionListener, MouseListener, Key
         for (int i = 0; i < model.getRowCount(); i++) {
             model.removeRow(i);
             i--;
+        }
+    }
+
+    public void getProveedoresNombre() {
+        vista.cmb_Producto_Categoria.removeAllItems();
+        List<Proveedores> list = proveedor_dao.listarProveedoresQuery("");
+        for (Proveedores prov : list) {
+            vista.cmb_compras_Proveedor.addItem(new ComboBoxDinamico(prov.getId(), prov.getNombre()));
         }
     }
 

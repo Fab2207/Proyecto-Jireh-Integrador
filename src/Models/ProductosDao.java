@@ -169,7 +169,7 @@ public class ProductosDao {
 
     // Buscar producto por código
     public Productos buscarCodigo(int codigo) {
-        String query = "SELECT pro.id, pro.nombre FROM productos pro WHERE pro.codigo = ?";
+        String query = "SELECT pro.id, pro.codigo, pro.nombre FROM productos pro WHERE pro.codigo = ?";
         Productos product = new Productos();
 
         try {
@@ -191,22 +191,25 @@ public class ProductosDao {
 
     // Verificar cantidad disponible de un producto
     public Productos buscarId(int id) {
-        String query = "SELECT cantidad_producto FROM productos WHERE id=?";
-        Productos product = new Productos();
-
+        Productos producto = new Productos();
+        String query = "SELECT * FROM productos WHERE id = ?";
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
-
             if (rs.next()) {
-                product.setCantidad_producto(rs.getInt("cantidad_producto"));
+                producto.setId(rs.getInt("id"));
+                producto.setNombre(rs.getString("nombre"));
+                // Validación defensiva por si viene NULL:
+                Object cantidadObj = rs.getObject("cantidad_producto");
+                int cantidad = (cantidadObj != null) ? rs.getInt("cantidad_producto") : 0;
+                producto.setCantidad_producto(cantidad);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al verificar cantidad: " + e);
+            JOptionPane.showMessageDialog(null, "Error al buscar producto por ID: " + e);
         }
-        return product;
+        return producto;
     }
 
     // Actualizar stock del producto
