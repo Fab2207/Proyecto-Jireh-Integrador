@@ -169,7 +169,8 @@ public class ProductosDao {
 
     // Buscar producto por código
     public Productos buscarCodigo(int codigo) {
-        String query = "SELECT pro.id, pro.codigo, pro.nombre FROM productos pro WHERE pro.codigo = ?";
+        String query = "SELECT pro.id, pro.codigo, pro.nombre, pro.precio_unitario,"
+                + " pro.cantidad_producto FROM productos pro WHERE pro.codigo = ?";
         Productos product = new Productos();
 
         try {
@@ -182,6 +183,8 @@ public class ProductosDao {
                 product.setId(rs.getInt("id"));
                 product.setCodigo(rs.getInt("codigo"));
                 product.setNombre(rs.getString("nombre"));
+                product.setPrecio_unitario(rs.getDouble("precio_unitario"));
+                product.setCantidad_producto(rs.getInt("cantidad_producto"));
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al buscar por código: " + e);

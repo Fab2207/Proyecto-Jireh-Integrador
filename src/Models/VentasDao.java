@@ -19,7 +19,7 @@ public class VentasDao {
 
     //Registrar Venta
     public boolean registrarVentaQuery(int cliente_id, int empleado_id, double total) {
-        String query = "INSERT INTO ventas (cliente_id, empleado_id, total, fecha_venta"
+        String query = "INSERT INTO ventas (cliente_id, empleado_id, total, fecha_venta)"
                 + "VALUES(?,?,?,?)";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
@@ -41,7 +41,7 @@ public class VentasDao {
     public boolean registrarVentaDetallesQuery(int producto_id, int venta_id,
             int venta_cantidad, double venta_precio, double venta_subtotal) {
         String query = "INSERT INTO ventas_detalles (producto_id, venta_id, "
-                + "venta_cantidad, venta_precio, venta_subtotal) VALUES(?,?;?,?,?)";
+                + "venta_cantidad, venta_precio, venta_subtotal) VALUES(?,?,?,?,?)";
         Timestamp dateTime = new Timestamp(new Date().getTime());
         try {
             conn = cn.getConnection();

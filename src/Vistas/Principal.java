@@ -7,6 +7,7 @@ import Controladores.EmpleadosController;
 import Controladores.ProductosController;
 import Controladores.ProveedoresController;
 import Controladores.SettingsControllers;
+import Controladores.VentasController;
 import Models.Categorias;
 import Models.CategoriasDao;
 import Models.Clientes;
@@ -21,6 +22,8 @@ import Models.Productos;
 import Models.ProductosDao;
 import Models.Proveedores;
 import Models.ProveedoresDao;
+import Models.Ventas;
+import Models.VentasDao;
 import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
@@ -49,6 +52,10 @@ public class Principal extends javax.swing.JFrame {
     //Compras
     Compras compra = new Compras();
     ComprasDao compra_dao = new ComprasDao();
+
+    //Ventas
+    Ventas venta = new Ventas();
+    VentasDao venta_dao = new VentasDao();
 
     public Principal() {
         initComponents();
@@ -82,6 +89,10 @@ public class Principal extends javax.swing.JFrame {
 
         //Controlador de Compras
         ComprasController datos_compra = new ComprasController(compra, compra_dao, this);
+
+        //Controlador de Ventas
+        VentasController datos_venta = new VentasController(venta, venta_dao, this);
+
     }
 
     public String titleInterface() {

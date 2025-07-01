@@ -115,4 +115,23 @@ public class ClientesDao {
         }
     }
 
+    //Buscar Cliente
+    public Clientes buscarClientes(int id) {
+        String query = "SELECT cli.id, cli.nombre_completo FROM clientes cli WHERE cli.id = ?";
+        Clientes cliente = new Clientes();
+        try {
+            conn = cn.getConnection();
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                cliente.setId(rs.getInt("id"));
+                cliente.setNombre_completo(rs.getString("nombre_completo"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return cliente;
+    }
+
 }
