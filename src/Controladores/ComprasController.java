@@ -202,18 +202,23 @@ public class ComprasController implements ActionListener, MouseListener, KeyList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == vista.jLabel4) {
+        Object source = e.getSource();
+
+        if (source == vista.jLabel4) {
             if (rol.equals("Administrador")) {
                 vista.jTabbedPane2.setSelectedIndex(1);
                 limpiarTablaTemp();
             } else {
-                vista.jTabbedPane2.setEnabledAt(0, false);
                 JOptionPane.showMessageDialog(null, "No tienes privilegios de Administrador");
             }
-        } else if (e.getSource() == vista.jLabel9) {
-            vista.jTabbedPane2.setSelectedIndex(7);
-            limpiarTabla();
-            listAllCompras();
+        } else if (source == vista.jLabel9) {
+            if (rol.equals("Administrador")) {
+                vista.jTabbedPane2.setSelectedIndex(7);
+                limpiarTabla();
+                listAllCompras();
+            } else {
+                JOptionPane.showMessageDialog(null, "No tienes privilegios de Administrador");
+            }
         }
     }
 

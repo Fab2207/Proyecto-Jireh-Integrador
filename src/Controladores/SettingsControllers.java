@@ -79,6 +79,7 @@ public class SettingsControllers implements MouseListener {
             if (rol_user.equalsIgnoreCase("Administrador")) {
                 view.jTabbedPane2.setSelectedIndex(8);
             } else {
+                view.jTabbedPane2.setEnabledAt(8, false);
                 JOptionPane.showMessageDialog(view, "No tienes privilegios de administrador para acceder a la configuración.");
             }
         }
